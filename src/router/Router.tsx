@@ -38,12 +38,10 @@ export default function Router() {
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "transparent",
+              paddingHorizontal: 12,
             },
           }}>
           <Stack.Screen name="Home" component={Home} />
