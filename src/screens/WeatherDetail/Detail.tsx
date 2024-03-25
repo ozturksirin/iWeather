@@ -1,10 +1,12 @@
 import React from "react";
-import { Text, View, ImageBackground, Image } from "react-native";
+import { View, ImageBackground } from "react-native";
 import { styles } from "./index.style";
-import { AppText, WeatherDetail } from "../../components";
+import { AppText, WeatherDetail, WeeklyInfo } from "../../components";
 import Night from "../../assets/icons/Weather=Few clouds, Moment=Night.svg";
 
 import Thermometer from "../../assets/icons/Type=thermometer-simple-light.svg";
+import Cloud from "../../assets/icons/Weather=Storm, Moment=Day.svg";
+import AppTheme from "../../thema";
 
 type Props = {};
 
@@ -45,16 +47,46 @@ const Detail = (props: Props) => {
       </View>
       <View
         style={{
-          flex: 2,
+          marginTop: 8,
+          flex: 1.2,
           paddingHorizontal: 12,
+          backgroundColor: "#16161F",
+          borderRadius: 12,
         }}>
         <WeatherDetail
           title="Wind"
           value="5 km/h"
           svg={<Thermometer width={24} height={24} />}
         />
+
+        <WeatherDetail
+          title="Wind"
+          value="5 km/h"
+          svg={<Thermometer width={24} height={24} />}
+        />
+        <WeatherDetail
+          title="Wind"
+          value="5 km/h"
+          svg={<Thermometer width={24} height={24} />}
+        />
+        <WeatherDetail
+          title="Wind"
+          value="5 km/h"
+          svg={<Thermometer width={24} height={24} />}
+        />
+        <WeatherDetail
+          title="Wind"
+          value="5 km/h"
+          svg={<Thermometer width={24} height={24} />}
+        />
       </View>
-      <View style={{ flex: 0.5 }}></View>
+      <View style={styles.weekly}>
+        <WeeklyInfo />
+        <WeeklyInfo />
+        <WeeklyInfo />
+        <WeeklyInfo />
+        <WeeklyInfo />
+      </View>
     </>
   );
 };

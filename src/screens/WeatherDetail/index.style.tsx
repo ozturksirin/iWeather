@@ -27,4 +27,13 @@ export const styles = StyleSheet.create({
   dailyDegreeArea: {
     alignItems: "flex-start",
   },
+  weekly: {
+    flex: 0.5,
+    marginTop: 8,
+    paddingHorizontal: 12,
+    backgroundColor: "#16161F",
+    borderRadius: 12,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
 });
