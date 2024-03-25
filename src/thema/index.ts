@@ -56,6 +56,8 @@ const AppTheme = {
       gray_100: "##FAFAFA",
     },
     white: "#FFFFFF",
+    bg: "#1E1E29",
+    bgSecondary: "#16161F",
   },
   opacity: { disabled: 0.5, regular: 1 },
   image: {
