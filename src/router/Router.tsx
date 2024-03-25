@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Text, View } from "react-native";
+import { ImageBackground, StatusBar } from "react-native";
 import { styles } from "./router.style";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -35,18 +35,23 @@ export default function Router() {
     <>
       <StatusBar barStyle="light-content" />
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: "transparent",
-              paddingHorizontal: 12,
-            },
-          }}>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Detail" component={Detail} />
-        </Stack.Navigator>
+        <ImageBackground
+          source={require("../assets/images/Background.png")}
+          style={{ flex: 1 }}>
+          <Stack.Navigator
+            initialRouteName="Detail"
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent",
+                paddingHorizontal: 12,
+                paddingVertical: 12,
+              },
+            }}>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Detail" component={Detail} />
+          </Stack.Navigator>
+        </ImageBackground>
       </NavigationContainer>
     </>
   );

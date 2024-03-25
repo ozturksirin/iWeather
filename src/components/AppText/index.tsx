@@ -41,6 +41,7 @@ const AppText = (props: Props) => {
             ...style,
             fontFamily: font.types[multiText.type],
             fontSize: font.size[multiText.size],
+            color: "#8FB2F5",
           }}>
           {`${multiText.text}`}
         </Text>
