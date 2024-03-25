@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "../screens/Home/Home";
-import Detail from "../screens/WeatherDetail/Detail";
+import Detail from "../screens/WeatherDetail";
 
 import {
   useFonts,
@@ -37,9 +37,12 @@ export default function Router() {
       <NavigationContainer>
         <ImageBackground
           source={require("../assets/images/Background.png")}
-          style={{ flex: 1 }}>
+          style={{
+            flex: 1,
+            justifyContent: "center",
+          }}>
           <Stack.Navigator
-            initialRouteName="Detail"
+            initialRouteName="Home"
             screenOptions={{
               headerShown: false,
               contentStyle: {

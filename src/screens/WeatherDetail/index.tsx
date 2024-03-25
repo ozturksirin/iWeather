@@ -8,9 +8,13 @@ import Thermometer from "../../assets/icons/Type=thermometer-simple-light.svg";
 import Cloud from "../../assets/icons/Weather=Storm, Moment=Day.svg";
 import AppTheme from "../../thema";
 
-type Props = {};
+type Props = {
+  route: any;
+};
 
 const Detail = (props: Props) => {
+  const { route } = props;
+  console.log("params", route.params);
   return (
     <>
       <View style={styles.bgArea}>
@@ -81,11 +85,36 @@ const Detail = (props: Props) => {
         />
       </View>
       <View style={styles.weekly}>
-        <WeeklyInfo />
-        <WeeklyInfo />
-        <WeeklyInfo />
-        <WeeklyInfo />
-        <WeeklyInfo />
+        <WeeklyInfo
+          day="Mon"
+          maxDegree="28°c"
+          minDegree="26°c"
+          svg={<Cloud width={68} height={68} />}
+        />
+        <WeeklyInfo
+          day="Mon"
+          maxDegree="28°c"
+          minDegree="26°c"
+          svg={<Cloud width={68} height={68} />}
+        />
+        <WeeklyInfo
+          day="Mon"
+          maxDegree="28°c"
+          minDegree="26°c"
+          svg={<Cloud width={68} height={68} />}
+        />
+        <WeeklyInfo
+          day="Mon"
+          maxDegree="28°c"
+          minDegree="26°c"
+          svg={<Cloud width={68} height={68} />}
+        />
+        <WeeklyInfo
+          day="Mon"
+          maxDegree="28°c"
+          minDegree="26°c"
+          svg={<Cloud width={68} height={68} />}
+        />
       </View>
     </>
   );
