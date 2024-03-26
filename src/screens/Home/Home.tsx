@@ -4,12 +4,13 @@ import { AppInput, AppText } from "../../components";
 import LongLogo from "../../assets/icons/logoLong.svg";
 import { navigate, Props } from "./types";
 import { styles } from "./index.style";
+import Api from "../../Api";
+import axios from "axios";
 
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredData, setFilteredData] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const dummyData = [
     {
@@ -172,6 +173,7 @@ const Home = (props: Props) => {
   useEffect(() => {
     setFilteredData(dummyData);
   }, []);
+
   const handleSearch = (text: string) => {
     const searchTerm =
       text.toLocaleLowerCase("tr-TR") || text.toLocaleLowerCase("en-US");
@@ -192,6 +194,17 @@ const Home = (props: Props) => {
       });
     }
     setFilteredData(filtered);
+  };
+
+  const fetchWeather = async (city: string) => {
+    try {
+      const response = await Api.GET(city, {
+        APPID: process.env.API_KEY,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -223,6 +236,7 @@ const Home = (props: Props) => {
               value={searchQuery}
               filterData={filteredData}
               navigate={(city: navigate) => {
+                fetchWeather(city.name);
                 navigation.navigate("Detail", { city });
               }}
             />
