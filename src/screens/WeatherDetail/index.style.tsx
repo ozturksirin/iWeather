@@ -36,4 +36,11 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
   },
+  infoMiddle: {
+    marginTop: 8,
+    flex: 1.2,
+    paddingHorizontal: 12,
+    backgroundColor: "#16161F",
+    borderRadius: 12,
+  },
 });

@@ -3,5 +3,5 @@ export type Props = {
   placeholder?: string;
   onChange: (...args: unknown[]) => unknown;
   value: string;
-  filterData: any;
+  filterData: any | undefined;
 };

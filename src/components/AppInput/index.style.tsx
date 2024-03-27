@@ -25,7 +25,8 @@ export const styles = StyleSheet.create({
   list: {
     flex: 1,
     marginTop: 12,
-    minHeight: height / 2.4,
+    // minHeight: height / 2.4,
+    minHeight: "100%",
     backgroundColor: "#3B3B54",
     borderRadius: 8,
   },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TextInput, View, FlatList } from "react-native";
 import { styles } from "./index.style";
 import AppText from "../AppText";
@@ -10,7 +10,7 @@ const AppInput = (props: Props) => {
     placeholder = "Search location",
     onChange,
     value,
-    filterData,
+    filterData = [],
   } = props;
 
   const handleChange = async (value: string | null) => {
@@ -19,6 +19,10 @@ const AppInput = (props: Props) => {
     }
     onChange(value);
   };
+
+  useEffect(() => {
+    console.log("filterData", filterData);
+  }, [filterData]);
 
   return (
     <>
@@ -31,23 +35,34 @@ const AppInput = (props: Props) => {
         }
         style={styles.container}
       />
-      <FlatList
-        style={{
-          ...styles.list,
-        }}
-        data={filterData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.search}>
-            <AppText
-              text={item.name}
-              size="text_md"
-              type="regular"
-              onPress={() => navigate(item)}
-            />
-          </View>
+      {filterData !== undefined &&
+        filterData !== null &&
+        filterData?.length !== 0 && (
+          <FlatList
+            style={styles.list}
+            data={
+              filterData?.name
+                ? [filterData]
+                : filterData?.list
+                ? filterData.list
+                : []
+            }
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => {
+              console.log("Rendered item:", item);
+              return (
+                <View style={styles.search}>
+                  <AppText
+                    text={item?.name + ", " + item.sys?.country}
+                    size="text_md"
+                    vAlign="center"
+                    onPress={() => navigate(item)}
+                  />
+                </View>
+              );
+            }}
+          />
         )}
-      />
     </>
   );
 };
