@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import React, { useState } from "react";
+import { View } from "react-native";
 import { AppInput, AppText } from "../../components";
 import LongLogo from "../../assets/icons/logoLong.svg";
 import { navigate, Props } from "./types";
 import { styles } from "./index.style";
 import Api from "../../Api";
-import axios from "axios";
 import { Store, useStore } from "../../store/store";
-import AppTheme from "../../thema";
 
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<any[]>([]);
-  const [city, setCity] = useState<any[] | undefined>([]);
+  const [city, setCity] = useState<any[] | undefined | unknown>([]);
   const { fetchWeather } = useStore() as Store;
 
-  const getCityList = async (searchQuery: string) => {
+  const fetchCityList = async (searchQuery: string) => {
     try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${process.env.API_KEY}&units=metric`
+      const response = await Api.GET(
+        `weather?q=${searchQuery}&appid=${process.env.API_KEY}&units=metric`,
+        {
+          // q: searchQuery,
+        }
       );
       return response.data;
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error as string);
     }
   };
 
   const handleSearch = async (text: string) => {
-    const searchTerm =
+    const searchTerm: string =
       text
         .trim()
         .toLocaleLowerCase("tr-TR")
@@ -38,13 +38,13 @@ const Home = (props: Props) => {
 
     try {
       if (searchTerm !== "") {
-        const city = await getCityList(searchTerm);
+        const city = await fetchCityList(searchTerm);
         setCity(city);
       } else {
         setCity([]);
       }
     } catch (error) {
-      console.log("errorSearch", error);
+      console.log("errorSearch", error as string);
     }
   };
   return (

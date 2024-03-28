@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 
-// const BASE_URL = `http://api.openweathermap.org/data/2.5/weather/?q=`;
 const BASE_URL = `https://api.openweathermap.org/data/2.5/`;
 
 type Response<T> = {
