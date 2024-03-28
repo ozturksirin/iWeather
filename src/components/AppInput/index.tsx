@@ -20,10 +20,6 @@ const AppInput = (props: Props) => {
     onChange(value);
   };
 
-  useEffect(() => {
-    console.log("filterData", filterData);
-  }, [filterData]);
-
   return (
     <>
       <TextInput
@@ -49,7 +45,6 @@ const AppInput = (props: Props) => {
             }
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
-              console.log("Rendered item:", item);
               return (
                 <View style={styles.search}>
                   <AppText
