@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import AppText from "../AppText";
-import Cloud from "../../assets/icons/Weather=Storm, Moment=Day.svg";
 import AppTheme from "../../thema";
 import { styles } from "./index.style";
 import { Props } from "./types";
@@ -19,7 +18,7 @@ const WeeklyInfo = (props: Props) => {
           vAlign="center"
           hAlign="center"
         />
-        {svg ? svg : <Cloud width={68} height={68} />}
+        {svg ? svg : null}
         <AppText
           text={maxDegree ? maxDegree : ""}
           size="text_sm"

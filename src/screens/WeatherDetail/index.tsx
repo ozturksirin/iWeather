@@ -2,9 +2,10 @@ import React from "react";
 import { View, ImageBackground } from "react-native";
 import { styles } from "./index.style";
 import { AppText, WeatherDetail, WeeklyInfo } from "../../components";
-import { DailyWeatherData, InnerDay, Props } from "./types";
+import { DailyWeatherData, InnerDay, Props, WeatherDetailT } from "./types";
 
-import { Store, useStore } from "../../store/store";
+import { useStore } from "../../store/store";
+import { WeatherData } from "../../store/index";
 import utils from "../../utils";
 
 import Thermometer from "../../assets/icons/Type=thermometer-simple-light.svg";
@@ -27,7 +28,7 @@ import StormNight from "../../assets/icons/WeatherIcons/Weather=Storm, Moment=Ni
 const Detail = (props: Props) => {
   const {} = props;
   const { ConvertCelsius } = utils;
-  const { weatherData } = useStore() as Store;
+  const { weatherData } = useStore() as { weatherData: WeatherData };
 
   const WeeklyWeather = () => {
     const dailyWeatherData: DailyWeatherData[] = [];
@@ -65,14 +66,14 @@ const Detail = (props: Props) => {
               .charAt(0)
               .toUpperCase() +
               weatherData?.list[index * 8].weather[0].main.slice(1),
-            68
+            66
           ) as React.ReactElement
         }
       />
     ));
   };
 
-  const getWeatherIcon = (weather: string, size: number) => {
+  const getWeatherIcon = (weather: string, size?: number) => {
     const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
     const isDayTime = currentHour > 6 && currentHour < 18;
 
@@ -116,38 +117,63 @@ const Detail = (props: Props) => {
   const RainNightBG = require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Night.png");
   const StormDayBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Day.png");
   const StormNightBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Night.png");
+
+  const getBackgroundImage = () => {
+    const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
+    const isDayTime = currentHour > 6 && currentHour < 18;
+
+    if (isDayTime) {
+      switch (weatherData?.list[0].weather[0].main) {
+        case "Clear":
+          return ClearDayBG;
+        case "Clouds":
+          return CloudyDayBG;
+        case "Rain":
+          return RainDayBG;
+        case "Storm":
+          return StormDayBG;
+        default:
+          return ClearDayBG;
+      }
+    } else {
+      switch (weatherData?.list[0].weather[0].main) {
+        case "Clear":
+          return ClearNightBG;
+        case "Clouds":
+          return CloudyNightBG;
+        case "Rain":
+          return RainNightBG;
+        case "Storm":
+          return StormNightBG;
+        default:
+          return ClearNightBG;
+      }
+    }
+  };
   return (
     <>
       <View style={styles.bgArea}>
         <View style={styles.bigState}>
-          <ImageBackground
-            source={
-              weatherData?.list[0].weather[0].main === "Clear"
-                ? ClearDayBG
-                : weatherData?.list[0].weather[0].main === "Clouds"
-                ? CloudyDayBG
-                : weatherData?.list[0].weather[0].main === "Rain"
-                ? RainDayBG
-                : weatherData?.list[0].weather[0].main === "Storm"
-                ? StormDayBG
-                : ClearDayBG
-            }
-            style={styles.bgState}>
+          <ImageBackground source={getBackgroundImage()} style={styles.bgState}>
             <View style={styles.infoArea}>
-              <AppText
-                text={weatherData?.city.name + ", " + weatherData?.city.country}
-                size="text_md"
-                type="bold"
-                color="#FAFAFA"
-                vAlign="center"
-              />
-              <AppText
-                text={new Date(weatherData?.list[0].dt * 1000).toDateString()}
-                size="text_xs"
-                type="regular"
-                color="#FAFAFA"
-                vAlign="center"
-              />
+              <View>
+                <AppText
+                  text={
+                    weatherData?.city.name + ", " + weatherData?.city.country
+                  }
+                  size="text_md"
+                  type="bold"
+                  color="#FAFAFA"
+                  vAlign="center"
+                />
+                <AppText
+                  text={new Date(weatherData?.list[0].dt * 1000).toDateString()}
+                  size="text_xs"
+                  type="regular"
+                  color="#FAFAFA"
+                  vAlign="center"
+                />
+              </View>
               <View style={styles.infoHead}>
                 <View style={styles.dailyDegreeArea}>
                   <AppText
@@ -175,47 +201,61 @@ const Detail = (props: Props) => {
                     size="text_sm"
                   />
                 </View>
-                {
-                  getWeatherIcon(
-                    weatherData?.list[0].weather[0].main
-                      .charAt(0)
-                      .toUpperCase() +
-                      weatherData?.list[0].weather[0].main.slice(1),
-                    140
-                  ) as React.ReactElement
-                }
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                  {
+                    getWeatherIcon(
+                      weatherData?.list[0].weather[0].main
+                        .charAt(0)
+                        .toUpperCase() +
+                        weatherData?.list[0].weather[0].main.slice(1),
+                      200
+                    ) as React.ReactElement
+                  }
+                </View>
               </View>
             </View>
           </ImageBackground>
         </View>
       </View>
       <View style={styles.infoMiddle}>
-        <WeatherDetail
-          title="Thermal sensation"
-          value={ConvertCelsius(weatherData?.list[0].main.feels_like)}
-          svg={<Thermometer width={24} height={24} />}
-        />
-
-        <WeatherDetail
-          title="Probability of rain"
-          value={weatherData?.list[0].pop * 100 + " %"}
-          svg={<Rain width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="Wind speed"
-          value={weatherData?.list[0].wind.speed + " km/h"}
-          svg={<Wind width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="Air humidity"
-          value={weatherData?.list[0].main.humidity + " %"}
-          svg={<Drop width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="UV Index"
-          value={"No data available"}
-          svg={<Sun width={24} height={24} />}
-        />
+        {[
+          {
+            title: "Thermal sensation",
+            value: ConvertCelsius(weatherData?.list[0].main.feels_like),
+            svg: <Thermometer width={24} height={24} />,
+          },
+          {
+            title: "Probability of rain",
+            value: weatherData?.list[0].pop * 100 + " %",
+            svg: <Rain width={24} height={24} />,
+          },
+          {
+            title: "Wind speed",
+            value: weatherData?.list[0].wind.speed + " km/h",
+            svg: <Wind width={24} height={24} />,
+          },
+          {
+            title: "Air humidity",
+            value: weatherData?.list[0].main.humidity + " %",
+            svg: <Drop width={24} height={24} />,
+          },
+          {
+            title: "UV Index",
+            value: weatherData?.list[0].visibility / 1000 + " ",
+            svg: <Sun width={24} height={24} />,
+          },
+        ].map((detail: WeatherDetailT, index: number) => (
+          <WeatherDetail
+            key={index}
+            title={detail.title}
+            value={detail.value}
+            svg={detail.svg}
+          />
+        ))}
       </View>
       <View style={styles.weekly}>{WeeklyWeather()}</View>
     </>
