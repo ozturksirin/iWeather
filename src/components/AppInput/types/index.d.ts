@@ -4,4 +4,5 @@ export type Props = {
   onChange: (...args: unknown[]) => unknown;
   value: string;
   filterData: any | undefined;
+  showLoading?: boolean;
 };

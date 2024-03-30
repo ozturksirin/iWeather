@@ -5,13 +5,14 @@ import LongLogo from "../../assets/icons/logoLong.svg";
 import { navigate, Props } from "./types";
 import { styles } from "./index.style";
 import Api from "../../Api";
-import { Store, useStore } from "../../store/store";
+import { useStore } from "../../store/store";
 
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [city, setCity] = useState<any[] | undefined | unknown>([]);
-  const { fetchWeather } = useStore() as Store;
+
+  const { fetchWeather } = useStore() as { fetchWeather: Function };
 
   const fetchCityList = async (searchQuery: string) => {
     try {
@@ -47,6 +48,11 @@ const Home = (props: Props) => {
       console.log("errorSearch", error as string);
     }
   };
+
+  async function Req(name: string) {
+    await fetchWeather(name);
+  }
+
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -76,9 +82,10 @@ const Home = (props: Props) => {
               value={searchQuery}
               filterData={city ? city : null}
               navigate={(city: navigate) => {
-                fetchWeather(city.name);
-                navigation.navigate("Detail", { city });
+                Req(city.name);
+                navigation.navigate("Detail");
               }}
+              showLoading={true}
             />
           </View>
         </View>

@@ -4,7 +4,8 @@ import { styles } from "./index.style";
 import { AppText, WeatherDetail, WeeklyInfo } from "../../components";
 import { DailyWeatherData, InnerDay, Props } from "./types";
 
-import { Store, useStore } from "../../store/store";
+import { useStore } from "../../store/store";
+import { WeatherData } from "../../store/index";
 import utils from "../../utils";
 
 import Thermometer from "../../assets/icons/Type=thermometer-simple-light.svg";
@@ -27,7 +28,7 @@ import StormNight from "../../assets/icons/WeatherIcons/Weather=Storm, Moment=Ni
 const Detail = (props: Props) => {
   const {} = props;
   const { ConvertCelsius } = utils;
-  const { weatherData } = useStore() as Store;
+  const { weatherData } = useStore() as { weatherData: WeatherData };
 
   const WeeklyWeather = () => {
     const dailyWeatherData: DailyWeatherData[] = [];
@@ -65,7 +66,7 @@ const Detail = (props: Props) => {
               .charAt(0)
               .toUpperCase() +
               weatherData?.list[index * 8].weather[0].main.slice(1),
-            68
+            66
           ) as React.ReactElement
         }
       />
@@ -116,23 +117,44 @@ const Detail = (props: Props) => {
   const RainNightBG = require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Night.png");
   const StormDayBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Day.png");
   const StormNightBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Night.png");
+
+  const getBackgroundImage = () => {
+    const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
+    const isDayTime = currentHour > 6 && currentHour < 18;
+
+    if (isDayTime) {
+      switch (weatherData?.list[0].weather[0].main) {
+        case "Clear":
+          return ClearDayBG;
+        case "Clouds":
+          return CloudyDayBG;
+        case "Rain":
+          return RainDayBG;
+        case "Storm":
+          return StormDayBG;
+        default:
+          return ClearDayBG;
+      }
+    } else {
+      switch (weatherData?.list[0].weather[0].main) {
+        case "Clear":
+          return ClearNightBG;
+        case "Clouds":
+          return CloudyNightBG;
+        case "Rain":
+          return RainNightBG;
+        case "Storm":
+          return StormNightBG;
+        default:
+          return ClearNightBG;
+      }
+    }
+  };
   return (
     <>
       <View style={styles.bgArea}>
         <View style={styles.bigState}>
-          <ImageBackground
-            source={
-              weatherData?.list[0].weather[0].main === "Clear"
-                ? ClearDayBG
-                : weatherData?.list[0].weather[0].main === "Clouds"
-                ? CloudyDayBG
-                : weatherData?.list[0].weather[0].main === "Rain"
-                ? RainDayBG
-                : weatherData?.list[0].weather[0].main === "Storm"
-                ? StormDayBG
-                : ClearDayBG
-            }
-            style={styles.bgState}>
+          <ImageBackground source={getBackgroundImage()} style={styles.bgState}>
             <View style={styles.infoArea}>
               <AppText
                 text={weatherData?.city.name + ", " + weatherData?.city.country}
@@ -181,7 +203,7 @@ const Detail = (props: Props) => {
                       .charAt(0)
                       .toUpperCase() +
                       weatherData?.list[0].weather[0].main.slice(1),
-                    140
+                    120
                   ) as React.ReactElement
                 }
               </View>

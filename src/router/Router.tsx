@@ -5,7 +5,7 @@ import { styles } from "./router.style";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Home from "../screens/Home/Home";
+import Home from "../screens/Home";
 import Detail from "../screens/WeatherDetail";
 
 import {

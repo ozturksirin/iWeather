@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
-import { TextInput, View, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import { TextInput, View, FlatList, ActivityIndicator } from "react-native";
 import { styles } from "./index.style";
 import AppText from "../AppText";
 import { Props } from "./types";
+import Spinner from "../../assets/icons/Type=spinner-gap-regular.svg";
 
 const AppInput = (props: Props) => {
   const {
@@ -11,14 +12,27 @@ const AppInput = (props: Props) => {
     onChange,
     value,
     filterData = [],
+    showLoading = false,
   } = props;
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleChange = async (value: string | null) => {
+    setLoading(true);
     if (!value) {
-      return onChange("");
+      onChange("");
+    } else {
+      onChange(value);
     }
-    onChange(value);
+    setLoading(false);
   };
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [navigate]);
 
   return (
     <>
@@ -31,6 +45,19 @@ const AppInput = (props: Props) => {
         }
         style={styles.container}
       />
+      {showLoading && loading && (
+        <Spinner
+          style={{
+            position: "absolute",
+            right: 14,
+            top: 78,
+            zIndex: 1,
+          }}
+          width={28}
+          height={28}
+        />
+      )}
+      {/* --- filterData --- */}
       {filterData !== undefined &&
         filterData !== null &&
         filterData?.length !== 0 && (
