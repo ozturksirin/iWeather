@@ -7,17 +7,20 @@ import { styles } from "./index.style";
 import { useStore } from "../../store/store";
 import Toast from "react-native-toast-message";
 import { flexStyles } from "../../thema";
+import * as Location from "expo-location";
 
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [city, setCity] = useState<City[] | undefined | unknown>([]);
+  const [city, setCity] = useState<City[] | undefined | unknown | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { fetchWeather, fetchCityList } = useStore() as {
-    fetchWeather: Function;
-    fetchCityList: Function;
-  };
+  const { fetchWeather, fetchCityList, fetchWeatherByLocation } =
+    useStore() as {
+      fetchWeather: Function;
+      fetchCityList: Function;
+      fetchWeatherByLocation: Function;
+    };
 
   const handleSearch = async (text: string) => {
     const searchTerm: string =
@@ -56,6 +59,35 @@ const Home = (props: Props) => {
     setIsLoading(false);
   }, []);
 
+  const getLocation = async () => {
+    try {
+      setIsLoading(true);
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Permission to access location was denied",
+        });
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      await fetchWeatherByLocation(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+      navigation.navigate("Detail");
+      setIsLoading(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Location not found.",
+      });
+    }
+  };
+
   return (
     <>
       <View style={flexStyles(1)}>
@@ -88,6 +120,19 @@ const Home = (props: Props) => {
                 Req(city.name);
               }}
               showLoading={isLoading}
+            />
+            <AppText
+              text="Use your current"
+              multiText={{
+                text: " Location",
+                type: "bold",
+                size: "text_xl",
+              }}
+              size="text_lg"
+              type="regular"
+              hAlign="center"
+              onPress={() => getLocation()}
+              newStyle={{ marginTop: 20 }}
             />
           </View>
         </View>
