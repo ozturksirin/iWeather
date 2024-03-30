@@ -19,8 +19,6 @@ const Home = (props: Props) => {
     fetchCityList: Function;
   };
 
-  console.log("city", city);
-
   const handleSearch = async (text: string) => {
     const searchTerm: string =
       text
