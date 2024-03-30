@@ -1,31 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { AppInput, AppText } from "../../components";
 import LongLogo from "../../assets/icons/logoLong.svg";
 import { navigate, Props } from "./types";
 import { styles } from "./index.style";
-import Api from "../../Api";
 import { useStore } from "../../store/store";
+import Toast from "react-native-toast-message";
+import { flexStyles } from "../../thema";
 
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [city, setCity] = useState<any[] | undefined | unknown>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { fetchWeather } = useStore() as { fetchWeather: Function };
-
-  const fetchCityList = async (searchQuery: string) => {
-    try {
-      const response = await Api.GET(
-        `weather?q=${searchQuery}&appid=${process.env.API_KEY}&units=metric`,
-        {
-          // q: searchQuery,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("error", error as string);
-    }
+  const { fetchWeather, fetchCityList } = useStore() as {
+    fetchWeather: Function;
+    fetchCityList: Function;
   };
 
   const handleSearch = async (text: string) => {
@@ -45,17 +36,29 @@ const Home = (props: Props) => {
         setCity([]);
       }
     } catch (error) {
-      console.log("errorSearch", error as string);
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "something went wrong.",
+      });
     }
   };
 
-  async function Req(name: string) {
+  const Req = async (name: string) => {
+    setIsLoading(true);
     await fetchWeather(name);
-  }
+    navigation.navigate("Detail");
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={flexStyles(1)}>
         <LongLogo style={styles.logo} width={186} height={32} />
         <View style={styles.searchBody}>
           <View>
@@ -83,14 +86,13 @@ const Home = (props: Props) => {
               filterData={city ? city : null}
               navigate={(city: navigate) => {
                 Req(city.name);
-                navigation.navigate("Detail");
               }}
-              showLoading={true}
+              showLoading={isLoading}
             />
           </View>
         </View>
       </View>
-      <View style={{ flex: 1 }} />
+      <View style={flexStyles(1)} />
     </>
   );
 };

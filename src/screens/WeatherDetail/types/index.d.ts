@@ -49,3 +49,9 @@ export interface Wind {
   gust: number;
   speed: number;
 }
+
+export type WeatherDetailT = {
+  title?: string;
+  value?: string;
+  svg?: React.ReactElement;
+};

@@ -2,7 +2,7 @@ import React from "react";
 import { View, ImageBackground } from "react-native";
 import { styles } from "./index.style";
 import { AppText, WeatherDetail, WeeklyInfo } from "../../components";
-import { DailyWeatherData, InnerDay, Props } from "./types";
+import { DailyWeatherData, InnerDay, Props, WeatherDetailT } from "./types";
 
 import { useStore } from "../../store/store";
 import { WeatherData } from "../../store/index";
@@ -73,7 +73,7 @@ const Detail = (props: Props) => {
     ));
   };
 
-  const getWeatherIcon = (weather: string, size: number) => {
+  const getWeatherIcon = (weather: string, size?: number) => {
     const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
     const isDayTime = currentHour > 6 && currentHour < 18;
 
@@ -156,20 +156,24 @@ const Detail = (props: Props) => {
         <View style={styles.bigState}>
           <ImageBackground source={getBackgroundImage()} style={styles.bgState}>
             <View style={styles.infoArea}>
-              <AppText
-                text={weatherData?.city.name + ", " + weatherData?.city.country}
-                size="text_md"
-                type="bold"
-                color="#FAFAFA"
-                vAlign="center"
-              />
-              <AppText
-                text={new Date(weatherData?.list[0].dt * 1000).toDateString()}
-                size="text_xs"
-                type="regular"
-                color="#FAFAFA"
-                vAlign="center"
-              />
+              <View>
+                <AppText
+                  text={
+                    weatherData?.city.name + ", " + weatherData?.city.country
+                  }
+                  size="text_md"
+                  type="bold"
+                  color="#FAFAFA"
+                  vAlign="center"
+                />
+                <AppText
+                  text={new Date(weatherData?.list[0].dt * 1000).toDateString()}
+                  size="text_xs"
+                  type="regular"
+                  color="#FAFAFA"
+                  vAlign="center"
+                />
+              </View>
               <View style={styles.infoHead}>
                 <View style={styles.dailyDegreeArea}>
                   <AppText
@@ -197,47 +201,61 @@ const Detail = (props: Props) => {
                     size="text_sm"
                   />
                 </View>
-                {
-                  getWeatherIcon(
-                    weatherData?.list[0].weather[0].main
-                      .charAt(0)
-                      .toUpperCase() +
-                      weatherData?.list[0].weather[0].main.slice(1),
-                    120
-                  ) as React.ReactElement
-                }
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                  {
+                    getWeatherIcon(
+                      weatherData?.list[0].weather[0].main
+                        .charAt(0)
+                        .toUpperCase() +
+                        weatherData?.list[0].weather[0].main.slice(1),
+                      200
+                    ) as React.ReactElement
+                  }
+                </View>
               </View>
             </View>
           </ImageBackground>
         </View>
       </View>
       <View style={styles.infoMiddle}>
-        <WeatherDetail
-          title="Thermal sensation"
-          value={ConvertCelsius(weatherData?.list[0].main.feels_like)}
-          svg={<Thermometer width={24} height={24} />}
-        />
-
-        <WeatherDetail
-          title="Probability of rain"
-          value={weatherData?.list[0].pop * 100 + " %"}
-          svg={<Rain width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="Wind speed"
-          value={weatherData?.list[0].wind.speed + " km/h"}
-          svg={<Wind width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="Air humidity"
-          value={weatherData?.list[0].main.humidity + " %"}
-          svg={<Drop width={24} height={24} />}
-        />
-        <WeatherDetail
-          title="UV Index"
-          value={"No data available"}
-          svg={<Sun width={24} height={24} />}
-        />
+        {[
+          {
+            title: "Thermal sensation",
+            value: ConvertCelsius(weatherData?.list[0].main.feels_like),
+            svg: <Thermometer width={24} height={24} />,
+          },
+          {
+            title: "Probability of rain",
+            value: weatherData?.list[0].pop * 100 + " %",
+            svg: <Rain width={24} height={24} />,
+          },
+          {
+            title: "Wind speed",
+            value: weatherData?.list[0].wind.speed + " km/h",
+            svg: <Wind width={24} height={24} />,
+          },
+          {
+            title: "Air humidity",
+            value: weatherData?.list[0].main.humidity + " %",
+            svg: <Drop width={24} height={24} />,
+          },
+          {
+            title: "UV Index",
+            value: weatherData?.list[0].visibility / 1000 + " ",
+            svg: <Sun width={24} height={24} />,
+          },
+        ].map((detail: WeatherDetailT, index: number) => (
+          <WeatherDetail
+            key={index}
+            title={detail.title}
+            value={detail.value}
+            svg={detail.svg}
+          />
+        ))}
       </View>
       <View style={styles.weekly}>{WeeklyWeather()}</View>
     </>
