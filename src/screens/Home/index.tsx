@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { AppInput, AppText } from "../../components";
 import LongLogo from "../../assets/icons/logoLong.svg";
-import { navigate, Props } from "./types";
+import { City, navigate, Props } from "./types";
 import { styles } from "./index.style";
 import { useStore } from "../../store/store";
 import Toast from "react-native-toast-message";
@@ -11,13 +11,15 @@ import { flexStyles } from "../../thema";
 const Home = (props: Props) => {
   const { navigation } = props;
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [city, setCity] = useState<any[] | undefined | unknown>([]);
+  const [city, setCity] = useState<City[] | undefined | unknown>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { fetchWeather, fetchCityList } = useStore() as {
     fetchWeather: Function;
     fetchCityList: Function;
   };
+
+  console.log("city", city);
 
   const handleSearch = async (text: string) => {
     const searchTerm: string =
