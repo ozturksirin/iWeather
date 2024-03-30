@@ -43,4 +43,24 @@ export const useStore = create((set) => ({
       });
     }
   },
+  fetchWeatherByLocation: async (latitude: number, longitude: number) => {
+    try {
+      const response = await Api.GET(
+        `forecast?lat=${latitude}&lon=${longitude}&appid=${process.env.API_KEY}`,
+        {
+          lat: latitude,
+          lon: longitude,
+          appid: API_KEY,
+        }
+      );
+      set({ weatherData: response.data });
+      return response.data;
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "An error occurred while fetching the weather data.",
+      });
+    }
+  },
 }));

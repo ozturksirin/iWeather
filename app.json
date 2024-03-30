@@ -24,6 +24,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"]
+
+    "plugins": [
+      ["expo-font"],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(iWeather) to use your location."
+        }
+      ]
+    ]
   }
 }
