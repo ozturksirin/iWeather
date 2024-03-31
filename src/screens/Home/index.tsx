@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { AppInput, AppText } from "../../components";
+import { SearchInput, AppText } from "../../components";
 import LongLogo from "../../assets/icons/logoLong.svg";
 import { City, navigate, Props } from "./types";
 import { styles } from "./index.style";
@@ -112,7 +112,7 @@ const Home = (props: Props) => {
               hAlign="center"
               newStyle={{ marginBottom: 20 }}
             />
-            <AppInput
+            <SearchInput
               onChange={handleSearch}
               value={searchQuery}
               filterData={city ? city : null}

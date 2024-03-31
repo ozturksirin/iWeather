@@ -5,7 +5,7 @@ import AppText from "../AppText";
 import { Props } from "./types";
 import Spinner from "../../assets/icons/Type=spinner-gap-regular.svg";
 
-const AppInput = (props: Props) => {
+const SearchInput = (props: Props) => {
   const {
     navigate,
     placeholder = "Search location",
@@ -89,4 +89,4 @@ const AppInput = (props: Props) => {
   );
 };
 
-export default AppInput;
+export default SearchInput;
