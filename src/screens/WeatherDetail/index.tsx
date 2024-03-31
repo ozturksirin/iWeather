@@ -27,8 +27,41 @@ import StormNight from "../../assets/icons/WeatherIcons/Weather=Storm, Moment=Ni
 
 const Detail = (props: Props) => {
   const {} = props;
-  const { ConvertCelsius } = utils;
   const { weatherData } = useStore() as { weatherData: WeatherData };
+  const { ConvertCelsius, CalculateDayTime } = utils;
+
+  const getWeatherIcon = (weather: string, size?: number) => {
+    const isDayTime = CalculateDayTime();
+    const iconComponents = {
+      Clear: isDayTime ? (
+        <ClearDay width={size} height={size} />
+      ) : (
+        <ClearNight width={size} height={size} />
+      ),
+      Clouds: isDayTime ? (
+        <CloudyDay width={size} height={size} />
+      ) : (
+        <CloudyNight width={size} height={size} />
+      ),
+      Rain: isDayTime ? (
+        <RainDay width={size} height={size} />
+      ) : (
+        <RainNight width={size} height={size} />
+      ),
+      Storm: isDayTime ? (
+        <StormDay width={size} height={size} />
+      ) : (
+        <StormNight width={size} height={size} />
+      ),
+      default: isDayTime ? (
+        <FewCloudsDay width={size} height={size} />
+      ) : (
+        <FewCloudsNight width={size} height={size} />
+      ),
+    };
+
+    return iconComponents[weather] || iconComponents.default;
+  };
 
   const WeeklyWeather = () => {
     const dailyWeatherData: DailyWeatherData[] = [];
@@ -73,82 +106,28 @@ const Detail = (props: Props) => {
     ));
   };
 
-  const getWeatherIcon = (weather: string, size?: number) => {
-    const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
-    const isDayTime = currentHour > 6 && currentHour < 18;
-
-    if (isDayTime) {
-      switch (weather) {
-        case "Clear":
-          return <ClearDay width={size} height={size} />;
-        case "Clouds":
-          return <CloudyDay width={size} height={size} />;
-        case "Rain":
-          return <RainDay width={size} height={size} />;
-        case "Storm":
-          return <StormDay width={size} height={size} />;
-        default:
-          return <FewCloudsDay width={size} height={size} />;
-      }
-    } else {
-      switch (weather) {
-        case "Clear":
-          return <ClearNight width={size} height={size} />;
-        case "Clouds":
-          return <CloudyNight width={size} height={size} />;
-        case "Rain":
-          return <RainNight width={size} height={size} />;
-        case "Storm":
-          return <StormNight width={size} height={size} />;
-        default:
-          return <FewCloudsNight width={size} height={size} />;
-      }
-    }
-  };
-  const ClearDayBG = require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Day.png");
-  const ClearNightBG = require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Night.png");
-  const CloudyDayBG = require("../../assets/images/WeatherBackground/Weather=Cloudy, Moment=Day.png");
-  const CloudyNightBG = require("../../assets/images/WeatherBackground/Weather=Cloudy, Moment=Night.png");
-
-  // const FewCloudsDayBG = require("../../assets/images/WeatherBackground/Weather=Few clouds, Moment=Day.png");
-  // const FewCloudsNightBG = require("../../assets/images/WeatherBackground/Weather=Few clouds, Moment=Night.png");
-
-  const RainDayBG = require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Day.png");
-  const RainNightBG = require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Night.png");
-  const StormDayBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Day.png");
-  const StormNightBG = require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Night.png");
-
   const getBackgroundImage = () => {
-    const currentHour = new Date(weatherData?.list[0].dt * 1000).getHours();
-    const isDayTime = currentHour > 6 && currentHour < 18;
+    const isDayTime = CalculateDayTime();
 
-    if (isDayTime) {
-      switch (weatherData?.list[0].weather[0].main) {
-        case "Clear":
-          return ClearDayBG;
-        case "Clouds":
-          return CloudyDayBG;
-        case "Rain":
-          return RainDayBG;
-        case "Storm":
-          return StormDayBG;
-        default:
-          return ClearDayBG;
-      }
-    } else {
-      switch (weatherData?.list[0].weather[0].main) {
-        case "Clear":
-          return ClearNightBG;
-        case "Clouds":
-          return CloudyNightBG;
-        case "Rain":
-          return RainNightBG;
-        case "Storm":
-          return StormNightBG;
-        default:
-          return ClearNightBG;
-      }
-    }
+    const bgImages = {
+      Clear: isDayTime
+        ? require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Day.png")
+        : require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Night.png"),
+      Clouds: isDayTime
+        ? require("../../assets/images/WeatherBackground/Weather=Cloudy, Moment=Day.png")
+        : require("../../assets/images/WeatherBackground/Weather=Cloudy, Moment=Night.png"),
+      Rain: isDayTime
+        ? require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Day.png")
+        : require("../../assets/images/WeatherBackground/Weather=Rain, Moment=Night.png"),
+      Storm: isDayTime
+        ? require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Day.png")
+        : require("../../assets/images/WeatherBackground/Weather=Storm, Moment=Night.png"),
+      default: isDayTime
+        ? require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Day.png")
+        : require("../../assets/images/WeatherBackground/Weather=Clear, Moment=Night.png"),
+    };
+
+    return bgImages[weatherData?.list[0].weather[0].main] || bgImages.default;
   };
   return (
     <>

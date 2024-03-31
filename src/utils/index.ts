@@ -1,2 +1,3 @@
 import { ConvertCelsius } from "./ConvertCelsius";
-export default { ConvertCelsius };
+import { CalculateDayTime } from "./CalculateDayTime";
+export default { ConvertCelsius, CalculateDayTime };
