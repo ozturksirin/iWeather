@@ -30,4 +30,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "#3B3B54",
     borderRadius: 8,
   },
+  spinner: {
+    position: "absolute",
+    right: 14,
+    top: 76,
+    zIndex: 1,
+    alignSelf: "center",
+  },
 });

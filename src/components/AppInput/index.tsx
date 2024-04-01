@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextInput, View, FlatList, ActivityIndicator } from "react-native";
+import { TextInput, View, FlatList } from "react-native";
 import { styles } from "./index.style";
 import AppText from "../AppText";
 import { Props } from "./types";
@@ -46,16 +46,7 @@ const SearchInput = (props: Props) => {
         style={styles.container}
       />
       {showLoading && loading && (
-        <Spinner
-          style={{
-            position: "absolute",
-            right: 14,
-            top: 78,
-            zIndex: 1,
-          }}
-          width={28}
-          height={28}
-        />
+        <Spinner style={styles.spinner} width={28} height={28} />
       )}
       {/* --- filterData --- */}
       {filterData !== undefined &&

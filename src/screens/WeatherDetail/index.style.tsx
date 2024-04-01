@@ -46,4 +46,9 @@ export const styles = StyleSheet.create({
     backgroundColor: "#16161F",
     borderRadius: 12,
   },
+  dailyImageArea: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
 });

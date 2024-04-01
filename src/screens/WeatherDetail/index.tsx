@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ImageBackground } from "react-native";
+import { View, ImageBackground, SafeAreaView } from "react-native";
 import { styles } from "./index.style";
 import { AppText, WeatherDetail, WeeklyInfo } from "../../components";
 import { DailyWeatherData, InnerDay, Props, WeatherDetailT } from "./types";
@@ -131,9 +131,12 @@ const Detail = (props: Props) => {
   };
   return (
     <>
-      <View style={styles.bgArea}>
+      <SafeAreaView style={styles.bgArea}>
         <View style={styles.bigState}>
-          <ImageBackground source={getBackgroundImage()} style={styles.bgState}>
+          <ImageBackground
+            source={getBackgroundImage()}
+            style={styles.bgState}
+            borderRadius={8}>
             <View style={styles.infoArea}>
               <View>
                 <AppText
@@ -180,18 +183,13 @@ const Detail = (props: Props) => {
                     size="text_sm"
                   />
                 </View>
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}>
+                <View style={styles.dailyImageArea}>
                   {
                     getWeatherIcon(
                       weatherData?.list[0].weather[0].main
                         .charAt(0)
                         .toUpperCase() +
-                        weatherData?.list[0].weather[0].main.slice(1),
-                      200
+                        weatherData?.list[0].weather[0].main.slice(1)
                     ) as React.ReactElement
                   }
                 </View>
@@ -199,7 +197,7 @@ const Detail = (props: Props) => {
             </View>
           </ImageBackground>
         </View>
-      </View>
+      </SafeAreaView>
       <View style={styles.infoMiddle}>
         {[
           {
