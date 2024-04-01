@@ -35,14 +35,7 @@ Bu proje, React Native ve Expo kullanılarak geliştirilmiş bir hava durumu uyg
 ## QR KOD İLE ÇALIŞTIR
 
 #### Expo uygulamanızla aşağıdaki QR kodunu tarayın
-
-### Android
-
-![image](https://github.com/ozturksirin/iWeather/assets/92751534/6fd0294d-5f8e-4de1-a851-980786256c1e)
-
-### iOS
-
-![image](https://github.com/ozturksirin/iWeather/assets/92751534/4ea491c1-beaa-4c01-ad33-5c64317503e5)
+![qr](https://github.com/ozturksirin/iWeather/assets/92751534/5f7d1ffc-72c6-4339-bd59-10429574fdcf)
 
 GitHub deposunda bir sorun açarak herhangi bir geri bildirim veya öneri sağlamaktan çekinmeyin. 🌤️🌧️🌈
 
@@ -93,14 +86,7 @@ iWeather allows users to access real-time weather information from anywhere in t
 ## RUN WITH QR CODE
 
 ### Scan the following QR code with your Expo app
-
-### Android
-
-![image](https://github.com/ozturksirin/iWeather/assets/92751534/6fd0294d-5f8e-4de1-a851-980786256c1e)
-
-### iOS
-
-![image](https://github.com/ozturksirin/iWeather/assets/92751534/4ea491c1-beaa-4c01-ad33-5c64317503e5)
+![qr](https://github.com/ozturksirin/iWeather/assets/92751534/5f7d1ffc-72c6-4339-bd59-10429574fdcf)
 
 Feel free to provide any feedback or suggestions by opening an issue in the GitHub repository. 🌤️🌧️🌈
 
