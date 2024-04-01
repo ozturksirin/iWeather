@@ -51,12 +51,12 @@ iWeather allows users to access real-time weather information from anywhere in t
 
 ## Technologies
 
-- **React Native**: A JavaScript framework for building native mobile applications.
-- **Expo**: An open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React.
-- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
-- **Zustand**: A small, fast, and scalable state management library for React.
-- **Axios**: A promise-based HTTP client for making requests to external APIs.
-- **OpenWeatherMap API**: An API service that provides weather data, including current weather, forecasts, and historical data.
+- TypeScript
+- React Native
+- Zustand
+- Axios
+- Expo
+- OpenWeatherMap API
 
 ## Features
 
