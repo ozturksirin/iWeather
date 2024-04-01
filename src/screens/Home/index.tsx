@@ -119,8 +119,7 @@ const Home = (props: Props) => {
               navigate={(city: navigate) => {
                 Req(city.name);
               }}
-              // showLoading={isLoading}
-              showLoading={true}
+              showLoading={isLoading}
             />
             <AppText
               text="Use your current"
